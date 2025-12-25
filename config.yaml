@@ -1,0 +1,46 @@
+db:
+  connection_string: 'mongodb://localhost:27017/'
+  database: 'ir_search'
+  collection: 'documents'
+
+logic:
+  sleep_ms: 350
+  timeout_s: 30
+  retries: 3
+  fresh_seconds: 86400
+  max_pages_total: 300000
+  debug: false
+
+ncbi:
+  eutils_base: 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils'
+  tool: 'mai-ir'
+  email: ''
+  api_key: ''
+
+sources:
+  - name: 'pmc'
+    method: 'ncbi_eutils'
+    db: 'pmc'
+    terms:
+      - '(crispr OR cas9 OR "gene editing" OR "prime editing" OR "base editing")'
+    max_docs: 30000
+
+  - name: 'plos'
+    method: 'plos'
+    query: 'CRISPR'
+    max_docs: 7000
+
+  - name: 'biorxiv'
+    method: 'web'
+    sleep_ms: 1000
+    seeds:
+      - 'https://www.biorxiv.org/search/CRISPR%20Cas9'
+      - 'https://www.biorxiv.org/search/prime%20editing'
+      - 'https://www.biorxiv.org/search/base%20editing%20CRISPR'
+    allowed_domains:
+      - 'biorxiv.org'
+      - 'www.biorxiv.org'
+    doc_url_regex: '^https?://(www\.)?biorxiv\.org/content/10\.1101/\d{4}\.\d{2}\.\d{2}\.\d{6,}v\d+\.full/?(\?.*)?$'
+    follow_url_regex: '^https?://(www\.)?biorxiv\.org/(search/.*|content/10\.1101/.*)$'
+    max_docs: 15000
+    max_pages_total: 300000

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Search Results</title>
+    <style>
+        body { font-family: sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+        .search-box { text-align: center; margin-bottom: 30px; }
+        input[type="text"] { width: 60%; padding: 10px; font-size: 16px; }
+        input[type="submit"] { padding: 10px 20px; font-size: 16px; cursor: pointer; }
+        .result { margin-bottom: 20px; }
+        .result a { font-size: 18px; color: #1a0dab; text-decoration: none; }
+        .result a:hover { text-decoration: underline; }
+        .url { color: #006621; font-size: 14px; }
+        .meta { color: #545454; font-size: 13px; }
+        .pagination { margin-top: 30px; text-align: center; }
+        .pagination a { display: inline-block; padding: 10px 20px; background: #f1f3f4; text-decoration: none; color: #333; border-radius: 4px; }
+        .pagination a:hover { background: #e8eaed; }
+        .stats { color: #70757a; font-size: 14px; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <div class="search-box">
+        <form action="/search" method="get">
+            <input type="text" name="q" value="{{ query }}" required>
+            <input type="submit" value="Search">
+        </form>
+    </div>
+
+    {% if error %}
+        <div style="color: red; text-align: center;">{{ error }}</div>
+    {% else %}
+        <div class="stats">Found {{ total }} results in {{ elapsed }}s</div>
+
+        {% for res in results %}
+        <div class="result">
+            <a href="{{ res.url }}">{{ res.url }}</a>
+            <div class="url">{{ res.url }}</div>
+            <div class="meta">DocID: {{ res.id }}</div>
+        </div>
+        {% endfor %}
+
+        <div class="pagination">
+            {% if next_page %}
+                <a href="/search?q={{ query }}&page={{ next_page }}">Next 50 results &rarr;</a>
+            {% endif %}
+        </div>
+    {% endif %}
+</body>
+</html>
+

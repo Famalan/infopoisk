@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Results - MAI-IR Search</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: white; /* Explicitly white background */
+            color: #333;
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 15px;
+        }
+        .header h1 {
+            margin: 0;
+            margin-right: 20px;
+            font-size: 1.5em;
+            color: #4285f4;
+            cursor: pointer;
+        }
+        .search-form {
+            flex-grow: 1;
+        }
+        .search-input {
+            width: 100%;
+            max-width: 600px;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #dfe1e5;
+            border-radius: 24px;
+            outline: none;
+        }
+        .search-input:focus {
+            box-shadow: 0 1px 6px rgba(32,33,36,0.28);
+        }
+        .stats {
+            color: #70757a;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+        .result-item {
+            margin-bottom: 25px;
+            max-width: 600px;
+        }
+        .result-title {
+            font-size: 18px;
+            margin-bottom: 3px;
+        }
+        .result-title a {
+            color: #1a0dab;
+            text-decoration: none;
+        }
+        .result-title a:hover {
+            text-decoration: underline;
+        }
+        .result-url {
+            color: #006621;
+            font-size: 14px;
+        }
+        .pagination {
+            margin-top: 30px;
+        }
+        .pagination a {
+            color: #1a0dab;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1 onclick="window.location.href='/'">MAI-IR</h1>
+        <form class="search-form" action="/search" method="get">
+            <input type="text" name="q" class="search-input" value="{{ query }}" placeholder="Search...">
+        </form>
+    </div>
+
+    {% if error %}
+        <p class="error">{{ error }}</p>
+    {% else %}
+        <div class="stats">
+            Found {{ total }} results ({{ elapsed }} seconds)
+        </div>
+
+        <div class="results">
+        {% for res in results %}
+                <div class="result-item">
+                    <div class="result-title">
+                        <a href="{{ res.url }}" target="_blank">{{ res.title }}</a>
+                    </div>
+                    <div class="result-url">{{ res.url }}</div>
+                </div>
+            {% endfor %}
+        </div>
+
+        {% if next_page %}
+        <div class="pagination">
+            <a href="/search?q={{ query }}&page={{ next_page }}">Next Page ></a>
+        </div>
+        {% endif %}
+    {% endif %}
+</body>
+</html>

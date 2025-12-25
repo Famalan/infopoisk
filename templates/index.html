@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MAI-IR Search (Lab 5-6)</title>
+    <style>
+        body { font-family: sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; text-align: center; background-color: #ffffff; color: #333; }
+        input[type="text"] { width: 60%; padding: 10px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px; }
+        input[type="submit"] { padding: 10px 20px; font-size: 16px; cursor: pointer; background-color: #f8f9fa; border: 1px solid #f8f9fa; border-radius: 4px; color: #3c4043; }
+        input[type="submit"]:hover { background-color: #f1f3f4; border-color: #f1f3f4; box-shadow: 0 1px 1px rgba(0,0,0,.1); }
+        h1 { margin-bottom: 40px; color: #202124; }
+        .examples { margin-top: 20px; color: #666; text-align: left; background: #f9f9f9; padding: 15px; border-radius: 5px; border: 1px solid #eee; }
+        .examples code { background: #eee; padding: 2px 5px; border-radius: 3px; font-family: monospace; }
+    </style>
+</head>
+<body>
+    <h1>MAI-IR Search</h1>
+    <form action="/search" method="get">
+        <input type="text" name="q" placeholder="Enter query..." required>
+        <input type="submit" value="Search">
+    </form>
+    
+    <div class="examples">
+        <strong>Supported Syntax:</strong>
+        <ul>
+            <li>Boolean: <code>apple && orange</code>, <code>cat || dog</code>, <code>!mouse</code></li>
+            <li>Grouping: <code>(apple || banana) && !cherry</code></li>
+            <li>Phrase: <code>"machine learning"</code> (exact match)</li>
+            <li>Proximity: <code>"data science" / 5</code> (words within distance 5)</li>
+        </ul>
+    </div>
+</body>
+</html>
